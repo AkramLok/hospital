@@ -33,9 +33,6 @@ public class User {
     @Size(max = 120)
     private String password;
 
-    private Long ownerId;
-    private Long clientId;
-    private Long waiterId;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(  name = "user_roles",

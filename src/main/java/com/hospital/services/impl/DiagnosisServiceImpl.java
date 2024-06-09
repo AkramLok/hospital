@@ -10,6 +10,8 @@ import com.hospital.services.DiagnosisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DiagnosisServiceImpl implements DiagnosisService {
 
@@ -34,5 +36,10 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 
         diagnosis.setMedicalDossier(medicalDossier);
         diagnosisRepository.save(diagnosis);
+    }
+
+    @Override
+    public List<Diagnosis> getAllDiagnosesByMedicalDossierId(Long medicalDossierId) {
+        return diagnosisRepository.findByMedicalDossierId(medicalDossierId);
     }
 }

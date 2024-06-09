@@ -10,6 +10,8 @@ import com.hospital.services.AntecedentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AntecedentServiceImpl implements AntecedentService {
 
@@ -34,5 +36,9 @@ public class AntecedentServiceImpl implements AntecedentService {
 
         antecedent.setMedicalDossier(medicalDossier);
         antecedentRepository.save(antecedent);
+    }
+    @Override
+    public List<Antecedent> getAllAntecedentsByMedicalDossierId(Long medicalDossierId) {
+        return antecedentRepository.findByMedicalDossierId(medicalDossierId);
     }
 }

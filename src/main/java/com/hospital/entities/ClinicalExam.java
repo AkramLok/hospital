@@ -18,9 +18,6 @@ public class ClinicalExam {
     private Long id;
     private String pulmonary;
     private String abdominal;
-
-    //private String cardiovascular;
-
     private String generalExam;
     private String functionalSigns;
     private String physicalSigns;

@@ -4,6 +4,7 @@ import com.hospital.entities.Bed;
 import com.hospital.payload.response.MessageResponse;
 import com.hospital.services.BedService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,15 @@ public class BedController {
         }
     }
 
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity<List<Bed>> getBedsByPatientId(@PathVariable Long patientId) {
+        try {
+            List<Bed> beds = bedService.getBedsByPatientId(patientId);
+            return new ResponseEntity<>(beds, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @PostMapping("/remove/{bedId}")
     public ResponseEntity<?> removePatientFromBed(@PathVariable Long bedId) {
         try {

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/diagnosis")
 public class DiagnosisController {
@@ -22,5 +24,11 @@ public class DiagnosisController {
             @RequestBody Diagnosis diagnosis) {
         diagnosisService.addDiagnosisToPatient(patientId, diagnosis);
         return ResponseEntity.ok(new MessageResponse("Diagnosis added to patient successfully!"));
+    }
+
+    @GetMapping("/medical-dossier/{medicalDossierId}")
+    public ResponseEntity<List<Diagnosis>> getAllDiagnosesByMedicalDossierId(@PathVariable Long medicalDossierId) {
+        List<Diagnosis> diagnoses = diagnosisService.getAllDiagnosesByMedicalDossierId(medicalDossierId);
+        return ResponseEntity.ok(diagnoses);
     }
 }

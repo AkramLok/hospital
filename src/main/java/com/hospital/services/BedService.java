@@ -6,6 +6,9 @@ import java.util.List;
 public interface BedService {
     Bed assignPatientToBed(Long bedId, Long patientId);
     Bed removePatientFromBed(Long bedId);
+
+    List<Bed> getBedsByPatientId(Long patientId);
+
     Bed updateBedState(Long bedId);
     List<Bed> getAllBeds();
     Bed getBedById(Long id);

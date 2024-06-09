@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface BedRepository extends JpaRepository<Bed, Long> {
     List<Bed> findBySectorId(Long sectorId);
-
+    List<Bed> findByCurrentPatientId(Long patientId);
 }

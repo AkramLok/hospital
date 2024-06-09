@@ -9,11 +9,9 @@ import com.hospital.repositories.PatientRepository;
 import com.hospital.repositories.SectorRepository;
 import com.hospital.services.BedService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -85,6 +83,11 @@ public class BedServiceImpl implements BedService {
 
         patientRepository.save(patient);
         return bedRepository.save(bed);
+    }
+
+    @Override
+    public List<Bed> getBedsByPatientId(Long patientId) {
+        return bedRepository.findByCurrentPatientId(patientId);
     }
 
 

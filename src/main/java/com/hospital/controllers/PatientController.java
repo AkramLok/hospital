@@ -1,9 +1,11 @@
 package com.hospital.controllers;
 
 import com.hospital.entities.Patient;
+import com.hospital.payload.response.MessageResponse;
 import com.hospital.repositories.PatientRepository;
 import com.hospital.services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,12 +22,12 @@ public class PatientController {
     private PatientRepository patientRepository;
 
     @PostMapping("/add")
-    public ResponseEntity<Patient> addPatient(@RequestBody Patient patient) {
+    public ResponseEntity<?> addPatient(@RequestBody Patient patient) {
         try {
             Patient savedPatient = patientService.addPatient(patient);
-            return ResponseEntity.ok(savedPatient);
+            return ResponseEntity.ok(new MessageResponse("Patient saved successfully!"));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body(new MessageResponse("Patient not saved, error "+e.getMessage()));
         }
     }
 
@@ -42,6 +44,26 @@ public class PatientController {
             return ResponseEntity.ok(patient);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updatePatient(@PathVariable Long id, @RequestBody Patient updatedPatient) {
+        try {
+            Patient patient = patientService.updatePatient(id, updatedPatient);
+            return ResponseEntity.ok(new MessageResponse("Patient updated successfully!"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Patient not updated, error "+e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePatient(@PathVariable Long id) {
+        try {
+            patientService.deletePatient(id);
+            return ResponseEntity.ok(new MessageResponse("Patient and associated data deleted successfully"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(500).body(new MessageResponse("Error deleting patient: " + e.getMessage()));
         }
     }
 

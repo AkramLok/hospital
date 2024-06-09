@@ -4,8 +4,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-import java.util.Set;
-
 public class SignupRequest {
   @NotBlank
   @Size(min = 3, max = 20)
@@ -16,58 +14,9 @@ public class SignupRequest {
   @Email
   private String email;
 
-  private Set<String> role;
-
   @NotBlank
   @Size(min = 6, max = 40)
   private String password;
-
-  @NotBlank
-  @Size(max=50)
-  private String name;
-
-
-  @NotBlank
-  @Size(max=50)
-  private String phone;
-
-  @Size(max=50)
-  private String cin;
-
-  private Long restaurantId;
-
-  public String getCin() {
-    return cin;
-  }
-
-  public void setCin(String cin) {
-    this.cin = cin;
-  }
-
-  public Long getRestaurantId() {
-    return restaurantId;
-  }
-
-  public void setRestaurantId(Long restaurantId) {
-    this.restaurantId = restaurantId;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-
-  public String getPhone() {
-    return phone;
-  }
-
-  public void setPhone(String phone) {
-    this.phone = phone;
-  }
 
   public String getUsername() {
     return username;
@@ -91,13 +40,5 @@ public class SignupRequest {
 
   public void setPassword(String password) {
     this.password = password;
-  }
-
-  public Set<String> getRole() {
-    return this.role;
-  }
-
-  public void setRole(Set<String> role) {
-    this.role = role;
   }
 }

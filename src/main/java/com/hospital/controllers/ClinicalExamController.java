@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/clinical-exams")
 public class ClinicalExamController {
@@ -22,5 +24,10 @@ public class ClinicalExamController {
             @RequestBody ClinicalExam clinicalExam) {
         clinicalExamService.addClinicalExamToPatient(patientId, clinicalExam);
         return ResponseEntity.ok(new MessageResponse("Clinical exam added to patient successfully!"));
+    }
+
+    @GetMapping("/section/{section}/medical-dossier/{medicalDossierId}")
+    public List<ClinicalExam> getClinicalExamsBySection(@PathVariable String section, @PathVariable Long medicalDossierId) {
+        return clinicalExamService.getClinicalExamsBySection(section, medicalDossierId);
     }
 }

@@ -1,23 +1,25 @@
 package com.hospital.services.impl;
 
-import com.hospital.entities.Biology;
-import com.hospital.entities.Exploration;
-import com.hospital.entities.ExplorationType;
-import com.hospital.entities.Patient;
-import com.hospital.repositories.BiologyRepository;
+import com.hospital.entities.*;
 import com.hospital.repositories.ExplorationRepository;
 import com.hospital.repositories.PatientRepository;
-import com.hospital.services.BiologyService;
 import com.hospital.services.ExplorationService;
 import com.hospital.services.MedicalDossierService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ExplorationServiceImpl implements ExplorationService {
@@ -59,6 +61,32 @@ public class ExplorationServiceImpl implements ExplorationService {
        explorationRepository.save(exploration);
     }
 
+    @Override
+    public List<Exploration> getAllExplorationsRTByMedicalDossierId(Long medicalDossierId) {
+        Optional<MedicalDossier> optionalMedicalDossier = medicalDossierService.getMedicalDossierById(medicalDossierId);
+        if (optionalMedicalDossier.isPresent()) {
+            MedicalDossier medicalDossier = optionalMedicalDossier.get();
+            return medicalDossier.getExplorations().stream()
+                    .filter(exploration -> exploration.getType() == ExplorationType.RADIO_THORAX)
+                    .collect(Collectors.toList());
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public List<Exploration> getAllExplorationsEchoCGWithLinks(Long medicalDossierId) {
+        Optional<MedicalDossier> optionalMedicalDossier = medicalDossierService.getMedicalDossierById(medicalDossierId);
+        if (optionalMedicalDossier.isPresent()) {
+            MedicalDossier medicalDossier = optionalMedicalDossier.get();
+            return medicalDossier.getExplorations().stream()
+                    .filter(exploration -> exploration.getType() == ExplorationType.ECHOCARDIOGRAPHIE)
+                    .collect(Collectors.toList());
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public void saveExplorationImage(MultipartFile file, String filename) {
         try {
             Files.copy(file.getInputStream(), this.root.resolve(filename));
@@ -67,6 +95,23 @@ public class ExplorationServiceImpl implements ExplorationService {
                 throw new RuntimeException("A file of that name already exists.");
             }
             throw new RuntimeException(e.getMessage());
+        }
+    }
+
+
+    @Override
+    public Resource load(String filename) {
+        try {
+            Path file = root.resolve(filename);
+            Resource resource = new UrlResource(file.toUri());
+
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                throw new RuntimeException("Could not read the file!");
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Error: " + e.getMessage());
         }
     }
 
