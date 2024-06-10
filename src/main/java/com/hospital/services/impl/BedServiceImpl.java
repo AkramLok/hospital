@@ -8,6 +8,7 @@ import com.hospital.repositories.BedRepository;
 import com.hospital.repositories.PatientRepository;
 import com.hospital.repositories.SectorRepository;
 import com.hospital.services.BedService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +60,17 @@ public class BedServiceImpl implements BedService {
         return bedRepository.save(bed);
     }
 
+    @Override
+    @Transactional
+    public void deleteBed(Long bedId) {
+        Bed bed = bedRepository.findById(bedId)
+                .orElseThrow(() -> new IllegalArgumentException("Bed not found"));
+        if(bed.getCurrentPatient() != null) {
+            bed.getCurrentPatient().setBed(null);
+        }
+
+        bedRepository.delete(bed);
+}
 
     @Override
     public Bed removePatientFromBed(Long bedId) {

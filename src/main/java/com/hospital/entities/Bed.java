@@ -25,7 +25,7 @@ public class Bed {
     @JsonBackReference("sector-beds")
     private Sector sector;
 
-    @OneToOne(mappedBy = "bed", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "bed", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JsonManagedReference("bed-patient")
     private Patient currentPatient;
 

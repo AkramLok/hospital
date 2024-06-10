@@ -29,6 +29,7 @@ public class Patient {
 
     private String profession;
 
+    @Column(unique = true) // Ensure referenceID is unique in the database
     private String referenceID;
 
     @OneToOne

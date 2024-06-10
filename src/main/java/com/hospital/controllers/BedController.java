@@ -92,5 +92,15 @@ public class BedController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
+    @DeleteMapping("/delete/{bedId}")
+    public ResponseEntity<?> deleteBed(@PathVariable Long bedId) {
+        try {
+            bedService.deleteBed(bedId);
+            return ResponseEntity.ok(new MessageResponse("Bed deleted successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Exception : "+ e.getMessage()));
+        }
+    }
 }
 

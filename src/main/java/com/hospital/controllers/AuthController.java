@@ -4,6 +4,7 @@ import com.hospital.entities.ERole;
 import com.hospital.entities.Role;
 import com.hospital.entities.User;
 import com.hospital.payload.request.LoginRequest;
+import com.hospital.payload.request.ResetPasswordRequest;
 import com.hospital.payload.request.SignupRequest;
 import com.hospital.payload.response.JwtResponse;
 import com.hospital.payload.response.MessageResponse;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -106,6 +108,20 @@ public class AuthController {
     userRepository.save(user);
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+  }
+
+  @PostMapping("/reset-password")
+  public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
+    Optional<User> userOptional = userRepository.findByUsername(resetPasswordRequest.getUsername());
+
+    if (userOptional.isPresent()) {
+      User user = userOptional.get();
+      user.setPassword(encoder.encode(resetPasswordRequest.getNewPassword()));
+      userRepository.save(user);
+      return ResponseEntity.ok(new MessageResponse("Password updated successfully"));
+    } else {
+      return ResponseEntity.badRequest().body(new MessageResponse("Error: User not found"));
+    }
   }
 
 

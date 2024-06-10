@@ -26,20 +26,13 @@ public class PatientServiceImpl implements PatientService {
     @Override
     @Transactional
     public Patient addPatient(Patient patient) {
-        // Check if the patient already has a medical dossier
+        if (patientRepository.findByReferenceID(patient.getReferenceID()).isPresent()) {
+            throw new IllegalArgumentException("Reference ID already exists");
+        }
         if (patient.getMedicalDossier() == null) {
-            // If not, create a new medical dossier for the patient
             MedicalDossier medicalDossier = new MedicalDossier();
-            // Set any necessary properties for the medical dossier
-            // For example:
-            // medicalDossier.setPatient(patient); // if there is a bidirectional relationship
-            // medicalDossier.set... // set other properties as needed
-
-            // Set the medical dossier for the patient
             patient.setMedicalDossier(medicalDossier);
         }
-
-        // Save the patient (and cascade save the associated medical dossier)
         return patientRepository.save(patient);
     }
 

@@ -25,11 +25,14 @@ public class PatientController {
     public ResponseEntity<?> addPatient(@RequestBody Patient patient) {
         try {
             Patient savedPatient = patientService.addPatient(patient);
-            return ResponseEntity.ok(new MessageResponse("Patient saved successfully!"));
+            return ResponseEntity.ok(savedPatient);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Patient not saved, error "+e.getMessage()));
+            return ResponseEntity.badRequest().body(new MessageResponse("Patient not saved, error " + e.getMessage()));
         }
     }
+
 
     @GetMapping
     public ResponseEntity<List<Patient>> getAllPatients() {
