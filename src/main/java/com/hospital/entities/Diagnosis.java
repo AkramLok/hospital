@@ -16,8 +16,9 @@ public class Diagnosis {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(length = 1000)
     private String diagnosis;
+    @Column(length = 1000)
     private String diagnosisDifferentiel;
 
     @ManyToOne

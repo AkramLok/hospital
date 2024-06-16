@@ -41,12 +41,12 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 
   @Bean
   public DaoAuthenticationProvider authenticationProvider() {
-      DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-       
-      authProvider.setUserDetailsService(userDetailsService);
-      authProvider.setPasswordEncoder(passwordEncoder());
-   
-      return authProvider;
+    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+    authProvider.setUserDetailsService(userDetailsService);
+    authProvider.setPasswordEncoder(passwordEncoder());
+
+    return authProvider;
   }
 
 //  @Bean
@@ -54,7 +54,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 //  public AuthenticationManager authenticationManagerBean() throws Exception {
 //    return super.authenticationManagerBean();
 //  }
-  
+
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
     return authConfig.getAuthenticationManager();
@@ -76,28 +76,30 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 //
 //    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 //  }
-  
+
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
-        .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeRequests(auth ->
-          auth.requestMatchers("/api/auth/**").permitAll()
-                  .requestMatchers("/api/beds/**").permitAll()
-                  .requestMatchers("/api/patients/**").permitAll()
-                  .requestMatchers("/api/biologies/**").permitAll()
-                  .requestMatchers("/api/clinical-exams/**").permitAll()
-                  .requestMatchers("/api/ecgs/**").permitAll()
-                  .requestMatchers("/api/medical-dossiers/**").permitAll()
-                  .requestMatchers("/api/antecedents/**").permitAll()
-                  .requestMatchers("/api/explorations/**").permitAll()
-                  .requestMatchers("/api/diagnosis/**").permitAll()
-                  .anyRequest().authenticated()
-        );
+            .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeRequests(auth ->
+                    auth.requestMatchers("/api/auth/**").permitAll()
+                            .requestMatchers("/api/beds/**").permitAll()
+                            .requestMatchers("/api/patients/**").permitAll()
+                            .requestMatchers("/api/biologies/**").permitAll()
+                            .requestMatchers("/api/clinical-exams/**").permitAll()
+                            .requestMatchers("/api/ecgs/**").permitAll()
+                            .requestMatchers("/api/medical-dossiers/**").permitAll()
+                            .requestMatchers("/api/antecedents/**").permitAll()
+                            .requestMatchers("/api/explorations/**").permitAll()
+                            .requestMatchers("/api/diagnosis/**").permitAll()
+                            .requestMatchers("/api/medicines/**").permitAll()
+                            .anyRequest().authenticated()
+            );
     http.authenticationProvider(authenticationProvider());
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }
+
 
 }

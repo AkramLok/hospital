@@ -16,10 +16,15 @@ public class ClinicalExam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 1000)
     private String pulmonary;
+    @Column(length = 1000)
     private String abdominal;
+    @Column(length = 1000)
     private String generalExam;
+    @Column(length = 1000)
     private String functionalSigns;
+    @Column(length = 1000)
     private String physicalSigns;
 
     @ManyToOne

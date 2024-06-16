@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "patient")
 @Data
@@ -29,7 +31,7 @@ public class Patient {
 
     private String profession;
 
-    @Column(unique = true) // Ensure referenceID is unique in the database
+    @Column(unique = true)
     private String referenceID;
 
     @OneToOne
@@ -41,4 +43,8 @@ public class Patient {
     @JoinColumn(name = "medical_dossier_id", referencedColumnName = "id")
     @JsonManagedReference("medical-dossier-patient")
     private MedicalDossier medicalDossier;
+
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    @JsonManagedReference("patient-bedAssignmentHistories")
+    private List<BedAssignmentHistory> bedAssignmentHistories;
 }

@@ -18,6 +18,7 @@ public class ECG {
     private Long id;
 
     private String imageUrl;
+    @Column(length = 1000)
     private String conclusion;
 
     @ManyToOne

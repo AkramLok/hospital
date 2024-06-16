@@ -17,8 +17,11 @@ public class Antecedent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 1000)
     private String personal;
+    @Column(length = 1000)
     private String familial;
+    @Column(length = 1000)
     private String cardiovascularRiskFactors;
 
     @ManyToOne

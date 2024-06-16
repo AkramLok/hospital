@@ -13,4 +13,8 @@ public interface MedicalDossierService {
     void deleteMedicalDossier(Long patientId);
 
     Optional<MedicalDossier> getMedicalDossierById(Long id);
+
+    MedicalDossier archiveDossier(Long id);
+
+    MedicalDossier unarchiveDossier(Long id);
 }

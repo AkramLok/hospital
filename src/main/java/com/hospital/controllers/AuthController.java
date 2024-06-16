@@ -73,10 +73,10 @@ public class AuthController {
                 roles
         ));
       } else {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse("Account role must be admin."));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse("Le rôle du compte doit être administrateur."));
       }
-    } catch (AuthenticationException e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse("Invalid username or password"));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse("Nom d'utilisateur ou mot de passe invalide."));
     }
   }
 
@@ -85,13 +85,13 @@ public class AuthController {
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
       return ResponseEntity
               .badRequest()
-              .body(new MessageResponse("Error: Username is already taken!"));
+              .body(new MessageResponse("Erreur : le nom d'utilisateur est déjà pris !"));
     }
 
     if (userRepository.existsByEmail(signUpRequest.getEmail())) {
       return ResponseEntity
               .badRequest()
-              .body(new MessageResponse("Error: Email is already in use!"));
+              .body(new MessageResponse("Erreur : l'adresse e-mail est déjà utilisée !"));
     }
 
     // Create new user's account
@@ -101,13 +101,13 @@ public class AuthController {
 
     Set<Role> roles = new HashSet<>();
     Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            .orElseThrow(() -> new RuntimeException("Erreur : le rôle n'est pas trouvé."));
     roles.add(adminRole);
 
     user.setRoles(roles);
     userRepository.save(user);
 
-    return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    return ResponseEntity.ok(new MessageResponse("Utilisateur enregistré avec succès !"));
   }
 
   @PostMapping("/reset-password")
@@ -118,9 +118,9 @@ public class AuthController {
       User user = userOptional.get();
       user.setPassword(encoder.encode(resetPasswordRequest.getNewPassword()));
       userRepository.save(user);
-      return ResponseEntity.ok(new MessageResponse("Password updated successfully"));
+      return ResponseEntity.ok(new MessageResponse("Mot de passe mis à jour avec succès."));
     } else {
-      return ResponseEntity.badRequest().body(new MessageResponse("Error: User not found"));
+      return ResponseEntity.badRequest().body(new MessageResponse("Erreur : Utilisateur non trouvé."));
     }
   }
 
@@ -128,6 +128,6 @@ public class AuthController {
   @PostMapping("/logout")
   public ResponseEntity<?> logout(HttpServletRequest request) {
     SecurityContextHolder.clearContext();
-    return ResponseEntity.ok(new MessageResponse("Logout successful"));
+    return ResponseEntity.ok(new MessageResponse("Déconnexion réussie."));
   }
 }

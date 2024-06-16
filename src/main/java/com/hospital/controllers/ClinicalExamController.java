@@ -23,7 +23,7 @@ public class ClinicalExamController {
             @PathVariable Long patientId,
             @RequestBody ClinicalExam clinicalExam) {
         clinicalExamService.addClinicalExamToPatient(patientId, clinicalExam);
-        return ResponseEntity.ok(new MessageResponse("Clinical exam added to patient successfully!"));
+        return ResponseEntity.ok(new MessageResponse(" a été ajouté au patient avec succès !"));
     }
 
     @GetMapping("/section/{section}/medical-dossier/{medicalDossierId}")

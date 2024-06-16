@@ -18,6 +18,7 @@ public class Exploration {
     private Long id;
     private ExplorationType type;
     private String imageUrl;
+    @Column(length = 1000)
     private String conclusion;
 
     @ManyToOne

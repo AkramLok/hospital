@@ -41,10 +41,10 @@ public class BiologyController {
             @RequestParam("conclusion") String conclusion,
             @PathVariable("patientId") Long patientId) {
         if (bilanFile == null || bilanFile.isEmpty()) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Biology image file is empty!"));
+            return ResponseEntity.badRequest().body(new MessageResponse("Le fichier d'image de biologie est vide !"));
         }
         biologyService.uploadBiologyData(bilanFile, conclusion, patientId);
-        return ResponseEntity.ok(new MessageResponse("Biology saved successfully!"));
+        return ResponseEntity.ok(new MessageResponse("La biologie a été enregistrée avec succès !"));
     }
 
     @GetMapping(value = "/files/{filename:[a-zA-Z0-9._-]+}")

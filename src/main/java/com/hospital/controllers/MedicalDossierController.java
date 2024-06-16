@@ -28,16 +28,15 @@ public class MedicalDossierController {
         return ResponseEntity.ok(medicalDossier);
     }
 
-    @PatchMapping("/patient/{patientId}")
+    @PutMapping("/patient/{patientId}")
     public ResponseEntity<?> updateMedicalDossier(
             @PathVariable Long patientId,
             @RequestBody MedicalDossier partialMedicalDossier) {
-        try
-        {
+        try {
             MedicalDossier updatedMedicalDossier = medicalDossierService.updateMedicalDossier(patientId, partialMedicalDossier);
-            return ResponseEntity.ok(new MessageResponse("Medical dossier patched successfully!"));
+            return ResponseEntity.ok(new MessageResponse(" a été mis à jour avec succès !"));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error in patching medical dossier."));
+            return ResponseEntity.badRequest().body(new MessageResponse("Une erreur est survenue lors de la mise à jour du dossier médical."));
         }
     }
 
@@ -45,5 +44,17 @@ public class MedicalDossierController {
     public ResponseEntity<Void> deleteMedicalDossier(@PathVariable Long patientId) {
         medicalDossierService.deleteMedicalDossier(patientId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/archive")
+    public ResponseEntity<MedicalDossier> archiveDossier(@PathVariable Long id) {
+        MedicalDossier archivedDossier = medicalDossierService.archiveDossier(id);
+        return ResponseEntity.ok(archivedDossier);
+    }
+
+    @PostMapping("/{id}/unarchive")
+    public ResponseEntity<MedicalDossier> unarchiveDossier(@PathVariable Long id) {
+        MedicalDossier unarchivedDossier = medicalDossierService.unarchiveDossier(id);
+        return ResponseEntity.ok(unarchivedDossier);
     }
 }

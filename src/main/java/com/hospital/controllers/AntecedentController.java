@@ -22,7 +22,7 @@ public class AntecedentController {
             @PathVariable Long patientId,
             @RequestBody Antecedent antecedent) {
         antecedentService.addAntecedentToPatient(patientId, antecedent);
-        return ResponseEntity.ok(new MessageResponse("Antecedent added to patient successfully!"));
+        return ResponseEntity.ok(new MessageResponse("Antécédent ajouté au patient avec succès !"));
     }
 
     @GetMapping("/medical-dossier/{medicalDossierId}")

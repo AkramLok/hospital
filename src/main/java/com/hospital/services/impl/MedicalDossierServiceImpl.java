@@ -1,12 +1,12 @@
 package com.hospital.services.impl;
 
-import com.hospital.services.MedicalDossierService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.hospital.entities.MedicalDossier;
 import com.hospital.entities.Patient;
 import com.hospital.repositories.MedicalDossierRepository;
 import com.hospital.repositories.PatientRepository;
+import com.hospital.services.MedicalDossierService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
@@ -56,9 +56,7 @@ public class MedicalDossierServiceImpl implements MedicalDossierService {
         if (partialMedicalDossier.getConclusion() != null) {
             existingMedicalDossier.setConclusion(partialMedicalDossier.getConclusion());
         }
-        // Update other string attributes similarly
 
-        // Save the updated medical dossier
         return medicalDossierRepository.save(existingMedicalDossier);
     }
 
@@ -79,5 +77,27 @@ public class MedicalDossierServiceImpl implements MedicalDossierService {
         return medicalDossierRepository.findById(id);
     }
 
+    @Override
+    public MedicalDossier archiveDossier(Long id) {
+        Optional<MedicalDossier> optionalDossier = medicalDossierRepository.findById(id);
+        if (optionalDossier.isPresent()) {
+            MedicalDossier medicalDossier = optionalDossier.get();
+            medicalDossier.setArchived(true);
+            return medicalDossierRepository.save(medicalDossier);
+        } else {
+            throw new RuntimeException("Medical dossier not found with id " + id);
+        }
+    }
 
+    @Override
+    public MedicalDossier unarchiveDossier(Long id) {
+        Optional<MedicalDossier> optionalDossier = medicalDossierRepository.findById(id);
+        if (optionalDossier.isPresent()) {
+            MedicalDossier medicalDossier = optionalDossier.get();
+            medicalDossier.setArchived(false);
+            return medicalDossierRepository.save(medicalDossier);
+        } else {
+            throw new RuntimeException("Medical dossier not found with id " + id);
+        }
+    }
 }

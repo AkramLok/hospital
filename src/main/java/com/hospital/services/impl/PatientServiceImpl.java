@@ -11,7 +11,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,17 +22,29 @@ public class PatientServiceImpl implements PatientService {
 
     @Autowired
     private BedRepository bedRepository;
+
     @Override
     @Transactional
     public Patient addPatient(Patient patient) {
-        if (patientRepository.findByReferenceID(patient.getReferenceID()).isPresent()) {
+        if (patient.getReferenceID() == null || patient.getReferenceID().isEmpty()) {
+            patient.setReferenceID(generateReferenceID(patient));
+        } else if (patientRepository.findByReferenceID(patient.getReferenceID()).isPresent()) {
             throw new IllegalArgumentException("Reference ID already exists");
         }
+
         if (patient.getMedicalDossier() == null) {
             MedicalDossier medicalDossier = new MedicalDossier();
             patient.setMedicalDossier(medicalDossier);
         }
+
         return patientRepository.save(patient);
+    }
+    private String generateReferenceID(Patient patient) {
+        // Example: Use initials of the patient name, current timestamp, and a random number
+        String initials = patient.getNom().substring(0, 1) + patient.getPrenom().substring(0, 1);
+        long timestamp = System.currentTimeMillis();
+        int randomNum = (int) (Math.random() * 1000);
+        return initials.toUpperCase() + "-" + timestamp + "-" + randomNum;
     }
 
     @Override
@@ -60,8 +71,6 @@ public class PatientServiceImpl implements PatientService {
         Optional<Patient> optionalPatient = patientRepository.findById(patientId);
         if (optionalPatient.isPresent()) {
             Patient patient = optionalPatient.get();
-
-            // Remove bed assignment
             if (patient.getBed() != null) {
                 Bed bed = patient.getBed();
                 bed.setCurrentPatient(null);
@@ -70,8 +79,6 @@ public class PatientServiceImpl implements PatientService {
                 patient.setBed(null);
                 bedRepository.save(bed);
             }
-
-            // Delete patient and cascade to medical dossier
             patientRepository.delete(patient);
         } else {
             throw new RuntimeException("Patient not found with id: " + patientId);
@@ -87,4 +94,6 @@ public class PatientServiceImpl implements PatientService {
     public Patient getPatientById(Long id) {
         return patientRepository.findById(id).orElseThrow(() -> new RuntimeException("Patient not found"));
     }
+
+
 }

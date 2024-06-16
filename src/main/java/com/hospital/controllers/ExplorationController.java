@@ -36,10 +36,10 @@ public class ExplorationController {
             @RequestParam("explorationType") ExplorationType explorationType,
             @PathVariable("patientId") Long patientId) {
         if (imageFile == null || imageFile.isEmpty()) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Exploration image file is empty!"));
+            return ResponseEntity.badRequest().body(new MessageResponse("L'image de l'exploration est vide."));
         }
         explorationService.uploadExplorationData(imageFile, conclusion, patientId, explorationType);
-        return ResponseEntity.ok(new MessageResponse("Exploration saved successfully!"));
+        return ResponseEntity.ok(new MessageResponse(" a été enregistrée avec succès !"));
     }
 
 

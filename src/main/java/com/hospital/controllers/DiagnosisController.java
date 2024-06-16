@@ -23,7 +23,7 @@ public class DiagnosisController {
             @PathVariable Long patientId,
             @RequestBody Diagnosis diagnosis) {
         diagnosisService.addDiagnosisToPatient(patientId, diagnosis);
-        return ResponseEntity.ok(new MessageResponse("Diagnosis added to patient successfully!"));
+        return ResponseEntity.ok(new MessageResponse("Le diagnostic a été ajouté au patient avec succès !"));
     }
 
     @GetMapping("/medical-dossier/{medicalDossierId}")

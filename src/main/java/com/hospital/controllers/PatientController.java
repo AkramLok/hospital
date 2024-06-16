@@ -29,7 +29,7 @@ public class PatientController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Patient not saved, error " + e.getMessage()));
+            return ResponseEntity.badRequest().body(new MessageResponse("Patient non enregistré, erreur " + e.getMessage()));
         }
     }
 
@@ -53,20 +53,21 @@ public class PatientController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updatePatient(@PathVariable Long id, @RequestBody Patient updatedPatient) {
         try {
-            Patient patient = patientService.updatePatient(id, updatedPatient);
-            return ResponseEntity.ok(new MessageResponse("Patient updated successfully!"));
+            Patient updatedpatient = patientService.updatePatient(id, updatedPatient);
+            return ResponseEntity.ok(updatedPatient);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Patient not updated, error "+e.getMessage()));
+            return ResponseEntity.badRequest().body(new MessageResponse("Patient non mis à jour, erreur  "+e.getMessage()));
         }
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePatient(@PathVariable Long id) {
         try {
             patientService.deletePatient(id);
-            return ResponseEntity.ok(new MessageResponse("Patient and associated data deleted successfully"));
+            return ResponseEntity.ok(new MessageResponse("Patient et données associées supprimés avec succès !"));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(500).body(new MessageResponse("Error deleting patient: " + e.getMessage()));
+            return ResponseEntity.status(500).body(new MessageResponse("Erreur lors de la suppression du patient : " + e.getMessage()));
         }
     }
 

@@ -97,7 +97,7 @@ public class BedController {
     public ResponseEntity<?> deleteBed(@PathVariable Long bedId) {
         try {
             bedService.deleteBed(bedId);
-            return ResponseEntity.ok(new MessageResponse("Bed deleted successfully"));
+            return ResponseEntity.ok(new MessageResponse("Le lit a été supprimé avec succès."));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse("Exception : "+ e.getMessage()));
         }

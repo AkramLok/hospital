@@ -39,10 +39,10 @@ public class ECGController {
             @RequestParam("conclusion") String conclusion,
             @PathVariable("patientId") Long patientId) {
         if (imageFile == null || imageFile.isEmpty()) {
-            return ResponseEntity.badRequest().body(new MessageResponse("ECG image file is empty!"));
+            return ResponseEntity.badRequest().body(new MessageResponse("Le fichier image de l'ECG est vide !"));
         }
         ecgService.uploadECGData(imageFile, conclusion, patientId);
-        return ResponseEntity.ok(new MessageResponse("ECG saved successfully!"));
+        return ResponseEntity.ok(new MessageResponse("ECG enregistré avec succès !"));
     }
 
     @GetMapping(value = "/files/{filename:[a-zA-Z0-9._-]+}")

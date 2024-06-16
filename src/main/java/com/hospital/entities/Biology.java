@@ -18,6 +18,7 @@ public class Biology {
     private Long id;
 
     private String bilanImageUrl;
+    @Column(length = 1000)
     private String conclusion;
 
     @ManyToOne

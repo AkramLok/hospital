@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Entity
-@Table(name = "Medical Dossier")
+@Table(name = "Medical_Dossier")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,9 +23,13 @@ public class MedicalDossier {
     @JsonBackReference("medical-dossier-patient")
     private Patient patient;
 
+    @Column(length = 1000)
     private String hospitalization;
+    @Column(length = 1000)
     private String historyDisease;
+    @Column(length = 1000)
     private String primaryConclusion;
+    @Column(length = 1000)
     private String conclusion;
 
     @OneToMany(mappedBy = "medicalDossier", cascade = CascadeType.ALL)
@@ -52,12 +56,13 @@ public class MedicalDossier {
     @JsonManagedReference("medical-dossier-biology")
     private List<Biology> biologies;
 
+    // New attribute for archiving
+    private boolean archived = false;
 
     /*
     //Pour diagnostic
     private String diagnosis;
     private String differentialDiagnosis;
-
 
     //Pour examen clinique
     private String cardiovascular;
@@ -88,7 +93,4 @@ public class MedicalDossier {
     private String imageBilanBiology;
     private String conclusionBiology;
     */
-
-
 }
-

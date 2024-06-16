@@ -1,10 +1,9 @@
+INSERT INTO `sector` (`id`, `name`) VALUES
+                                        (2, 'SECTEUR FROID'),
+                                        (1, 'SECTEUR USI');
+
 INSERT INTO `roles` (`id`, `name`) VALUES
-                                       (1, 'ROLE_USER'),
+                                       (3, 'ROLE_ADMIN'),
                                        (2, 'ROLE_MODERATOR'),
-                                       (3, 'ROLE_ADMIN');
-
-INSERT INTO sector (name) VALUES ('SECTEUR USI');
-INSERT INTO sector (name) VALUES ('SECTEUR FROID');
-
-
+                                       (1, 'ROLE_USER');
 

@@ -1,9 +1,7 @@
 package com.hospital.services.impl;
 
-import com.hospital.entities.Bed;
-import com.hospital.entities.BedState;
-import com.hospital.entities.Patient;
-import com.hospital.entities.Sector;
+import com.hospital.entities.*;
+import com.hospital.repositories.BedAssignmentHistoryRepository;
 import com.hospital.repositories.BedRepository;
 import com.hospital.repositories.PatientRepository;
 import com.hospital.repositories.SectorRepository;
@@ -27,6 +25,9 @@ public class BedServiceImpl implements BedService {
 
     @Autowired
     private SectorRepository sectorRepository;
+
+    @Autowired
+    private BedAssignmentHistoryRepository bedAssignmentHistoryRepository;
 
     @Override
     public Bed assignPatientToBed(Long bedId, Long patientId) {
@@ -57,6 +58,15 @@ public class BedServiceImpl implements BedService {
         patient.setBed(bed);
         bed.setStartDateTime(LocalDateTime.now());
         bed.setState(BedState.OCCUPIED);
+
+        BedAssignmentHistory history = new BedAssignmentHistory();
+        history.setBed(bed);
+        history.setPatient(patient);
+        history.setStartDateTime(LocalDateTime.now());
+        history.setStatus(PatientStatus.ASSIGNED);
+        history.setBedAssignedId(bed.getId());
+        bedAssignmentHistoryRepository.save(history);
+
         return bedRepository.save(bed);
     }
 
@@ -65,12 +75,12 @@ public class BedServiceImpl implements BedService {
     public void deleteBed(Long bedId) {
         Bed bed = bedRepository.findById(bedId)
                 .orElseThrow(() -> new IllegalArgumentException("Bed not found"));
-        if(bed.getCurrentPatient() != null) {
+        if (bed.getCurrentPatient() != null) {
             bed.getCurrentPatient().setBed(null);
         }
 
         bedRepository.delete(bed);
-}
+    }
 
     @Override
     public Bed removePatientFromBed(Long bedId) {
@@ -92,6 +102,14 @@ public class BedServiceImpl implements BedService {
         bed.setCurrentPatient(null);
         bed.setState(BedState.EMPTY);
         bed.setStartDateTime(null);
+
+        // Update endDateTime and status in BedAssignmentHistory
+        BedAssignmentHistory history = bedAssignmentHistoryRepository.findFirstByBedAndPatientOrderByStartDateTimeDesc(bed, patient);
+        if (history != null) {
+            history.setEndDateTime(LocalDateTime.now());
+            history.setStatus(PatientStatus.UNASSIGNED_BUT_PREVIOUSLY_HOSPITALIZED);
+            bedAssignmentHistoryRepository.save(history);
+        }
 
         patientRepository.save(patient);
         return bedRepository.save(bed);

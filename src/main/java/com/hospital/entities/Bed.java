@@ -7,8 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "bed")
@@ -33,4 +33,8 @@ public class Bed {
 
     @Enumerated(EnumType.STRING)
     private BedState state;
+
+    @OneToMany(mappedBy = "bed", cascade = CascadeType.ALL)
+    @JsonManagedReference("bed-bedAssignmentHistories")
+    private List<BedAssignmentHistory> bedAssignmentHistories;
 }
