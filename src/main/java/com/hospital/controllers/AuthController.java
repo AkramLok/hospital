@@ -92,13 +92,13 @@ public class AuthController {
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
       return ResponseEntity
               .badRequest()
-              .body(new MessageResponse("Erreur : le nom d'utilisateur est déjà pris !"));
+              .body(new MessageResponse("Le nom d'utilisateur est déjà pris !"));
     }
 
     if (userRepository.existsByEmail(signUpRequest.getEmail())) {
       return ResponseEntity
               .badRequest()
-              .body(new MessageResponse("Erreur : l'adresse e-mail est déjà utilisée !"));
+              .body(new MessageResponse("L'adresse e-mail est déjà utilisée !"));
     }
 
     // Create new user's account
@@ -108,12 +108,9 @@ public class AuthController {
 
     Set<Role> roles = new HashSet<>();
     Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-            .orElseThrow(() -> new RuntimeException("Erreur : le rôle n'est pas trouvé."));
+            .orElseThrow(() -> new RuntimeException("Le rôle n'est pas trouvé."));
     roles.add(adminRole);
-
     user.setRoles(roles);
-
-    // Create doctor entity
     Doctor doctor = new Doctor();
     doctor.setNom(signUpRequest.getDoctorNom());
     doctor.setPrenom(signUpRequest.getDoctorPrenom());
@@ -128,21 +125,18 @@ public class AuthController {
 
   @PostMapping("/request-password-reset")
   public ResponseEntity<?> requestPasswordReset(@RequestBody PasswordResetRequest request) {
-    boolean emailSent = userService.sendPasswordResetEmail(request.getEmail());
-    if (emailSent) {
-      return ResponseEntity.ok(new MessageResponse("Password reset email sent successfully."));
-    } else {
-      return ResponseEntity.badRequest().body(new MessageResponse("Error sending password reset email."));
-    }
+    MessageResponse response = userService.sendPasswordResetEmail(request.getEmail());
+    return ResponseEntity.status(response.isSuccess() ? HttpStatus.OK : HttpStatus.BAD_REQUEST)
+            .body(response);
   }
 
   @PostMapping("/reset-password")
   public ResponseEntity<?> resetPassword(@RequestBody PasswordResetForm form) {
     boolean passwordReset = userService.resetPassword(form.getToken(), form.getNewPassword());
     if (passwordReset) {
-      return ResponseEntity.ok(new MessageResponse("Password reset successfully."));
+      return ResponseEntity.ok(new MessageResponse("Réinitialisation du mot de passe réussie."));
     } else {
-      return ResponseEntity.badRequest().body(new MessageResponse("Invalid or expired token."));
+      return ResponseEntity.badRequest().body(new MessageResponse("Token invalide ou expiré."));
     }
   }
 
@@ -158,7 +152,7 @@ public class AuthController {
       userRepository.save(user);
       return ResponseEntity.ok(new MessageResponse("Mot de passe mis à jour avec succès."));
     } else {
-      return ResponseEntity.badRequest().body(new MessageResponse("Erreur : Utilisateur non trouvé."));
+      return ResponseEntity.badRequest().body(new MessageResponse("Utilisateur non trouvé."));
     }
   }
 

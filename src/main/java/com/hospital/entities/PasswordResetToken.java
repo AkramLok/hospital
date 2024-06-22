@@ -16,7 +16,7 @@ public class PasswordResetToken {
     private String token;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", unique = true)
     private User user;
 
     private LocalDateTime expiryDate;
@@ -32,6 +32,4 @@ public class PasswordResetToken {
     public boolean isExpired() {
         return LocalDateTime.now().isAfter(expiryDate);
     }
-
-    // Getters and setters...
 }
