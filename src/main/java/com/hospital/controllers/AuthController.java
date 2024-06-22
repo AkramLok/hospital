@@ -1,5 +1,8 @@
 package com.hospital.controllers;
 
+import com.hospital.dto.PasswordResetForm;
+import com.hospital.dto.PasswordResetRequest;
+import com.hospital.entities.Doctor;
 import com.hospital.entities.ERole;
 import com.hospital.entities.Role;
 import com.hospital.entities.User;
@@ -12,6 +15,7 @@ import com.hospital.repositories.RoleRepository;
 import com.hospital.repositories.UserRepository;
 import com.hospital.security.jwt.JwtUtils;
 import com.hospital.security.services.UserDetailsImpl;
+import com.hospital.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +53,9 @@ public class AuthController {
 
   @Autowired
   JwtUtils jwtUtils;
+
+  @Autowired
+  UserService userService;
 
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -105,12 +112,43 @@ public class AuthController {
     roles.add(adminRole);
 
     user.setRoles(roles);
+
+    // Create doctor entity
+    Doctor doctor = new Doctor();
+    doctor.setNom(signUpRequest.getDoctorNom());
+    doctor.setPrenom(signUpRequest.getDoctorPrenom());
+    doctor.setSpecialty(signUpRequest.getSpecialty());
+    doctor.setPhoneNumber(signUpRequest.getPhoneNumber());
+    user.setDoctor(doctor);
+
     userRepository.save(user);
 
     return ResponseEntity.ok(new MessageResponse("Utilisateur enregistré avec succès !"));
   }
 
+  @PostMapping("/request-password-reset")
+  public ResponseEntity<?> requestPasswordReset(@RequestBody PasswordResetRequest request) {
+    boolean emailSent = userService.sendPasswordResetEmail(request.getEmail());
+    if (emailSent) {
+      return ResponseEntity.ok(new MessageResponse("Password reset email sent successfully."));
+    } else {
+      return ResponseEntity.badRequest().body(new MessageResponse("Error sending password reset email."));
+    }
+  }
+
   @PostMapping("/reset-password")
+  public ResponseEntity<?> resetPassword(@RequestBody PasswordResetForm form) {
+    boolean passwordReset = userService.resetPassword(form.getToken(), form.getNewPassword());
+    if (passwordReset) {
+      return ResponseEntity.ok(new MessageResponse("Password reset successfully."));
+    } else {
+      return ResponseEntity.badRequest().body(new MessageResponse("Invalid or expired token."));
+    }
+  }
+
+
+
+  @PostMapping("/reset-password-auth")
   public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
     Optional<User> userOptional = userRepository.findByUsername(resetPasswordRequest.getUsername());
 
@@ -121,6 +159,26 @@ public class AuthController {
       return ResponseEntity.ok(new MessageResponse("Mot de passe mis à jour avec succès."));
     } else {
       return ResponseEntity.badRequest().body(new MessageResponse("Erreur : Utilisateur non trouvé."));
+    }
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<?> getUserById(@PathVariable Long id) {
+    Optional<User> user = userService.findUserById(id);
+    if (user.isPresent()) {
+      return ResponseEntity.ok(user.get());
+    } else {
+      return ResponseEntity.notFound().build();
+    }
+  }
+
+  @GetMapping("/{id}/doctor")
+  public ResponseEntity<?> getUserDoctorById(@PathVariable Long id) {
+    Optional<Doctor> doctor = userService.findDoctorByUserId(id);
+    if (doctor.isPresent()) {
+      return ResponseEntity.ok(doctor.get());
+    } else {
+      return ResponseEntity.notFound().build();
     }
   }
 

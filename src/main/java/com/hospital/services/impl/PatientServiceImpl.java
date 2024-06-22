@@ -52,18 +52,36 @@ public class PatientServiceImpl implements PatientService {
         Optional<Patient> optionalPatient = patientRepository.findById(id);
         if (optionalPatient.isPresent()) {
             Patient patient = optionalPatient.get();
-            patient.setNom(updatedPatient.getNom());
-            patient.setPrenom(updatedPatient.getPrenom());
-            patient.setAge(updatedPatient.getAge());
-            patient.setVille(updatedPatient.getVille());
-            patient.setAssurance(updatedPatient.getAssurance());
-            patient.setProfession(updatedPatient.getProfession());
-            patient.setReferenceID(updatedPatient.getReferenceID());
+
+            // Update fields only if they are not null or empty
+            if (updatedPatient.getNom() != null && !updatedPatient.getNom().isEmpty()) {
+                patient.setNom(updatedPatient.getNom());
+            }
+            if (updatedPatient.getPrenom() != null && !updatedPatient.getPrenom().isEmpty()) {
+                patient.setPrenom(updatedPatient.getPrenom());
+            }
+            if (updatedPatient.getAge() != null) {
+                patient.setAge(updatedPatient.getAge());
+            }
+            if (updatedPatient.getVille() != null && !updatedPatient.getVille().isEmpty()) {
+                patient.setVille(updatedPatient.getVille());
+            }
+            if (updatedPatient.getAssurance() != null && !updatedPatient.getAssurance().isEmpty()) {
+                patient.setAssurance(updatedPatient.getAssurance());
+            }
+            if (updatedPatient.getProfession() != null && !updatedPatient.getProfession().isEmpty()) {
+                patient.setProfession(updatedPatient.getProfession());
+            }
+            if (updatedPatient.getReferenceID() != null && !updatedPatient.getReferenceID().isEmpty()) {
+                patient.setReferenceID(updatedPatient.getReferenceID());
+            }
+
             return patientRepository.save(patient);
         } else {
             throw new RuntimeException("Patient not found with id: " + id);
         }
     }
+
 
     @Override
     @Transactional

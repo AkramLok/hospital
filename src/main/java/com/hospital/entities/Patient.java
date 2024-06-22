@@ -20,15 +20,10 @@ public class Patient {
     private Long id;
 
     private String nom;
-
     private String prenom;
-
-    private int age;
-
+    private Integer age;
     private String ville;
-
     private String assurance;
-
     private String profession;
 
     @Column(unique = true)
@@ -43,6 +38,10 @@ public class Patient {
     @JoinColumn(name = "medical_dossier_id", referencedColumnName = "id")
     @JsonManagedReference("medical-dossier-patient")
     private MedicalDossier medicalDossier;
+
+    @OneToMany(mappedBy = "patient")
+    @JsonManagedReference("patient-roomAssignments")
+    private List<RoomAssignment> roomAssignments;
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
     @JsonManagedReference("patient-bedAssignmentHistories")

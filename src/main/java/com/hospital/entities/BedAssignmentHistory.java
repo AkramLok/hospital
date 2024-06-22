@@ -29,6 +29,8 @@ public class BedAssignmentHistory {
     @JsonBackReference("patient-bedAssignmentHistories")
     private Patient patient;
 
+    private String doctorDetails;
+
     private LocalDateTime startDateTime;
 
     private LocalDateTime endDateTime;

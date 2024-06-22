@@ -6,6 +6,8 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 
 public interface BedService {
+    Bed assignPatientToBed(Long bedId, Long patientId, Long doctorId);
+
     Bed assignPatientToBed(Long bedId, Long patientId);
 
     @Transactional

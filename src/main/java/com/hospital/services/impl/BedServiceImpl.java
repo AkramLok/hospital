@@ -1,10 +1,7 @@
 package com.hospital.services.impl;
 
 import com.hospital.entities.*;
-import com.hospital.repositories.BedAssignmentHistoryRepository;
-import com.hospital.repositories.BedRepository;
-import com.hospital.repositories.PatientRepository;
-import com.hospital.repositories.SectorRepository;
+import com.hospital.repositories.*;
 import com.hospital.services.BedService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +24,16 @@ public class BedServiceImpl implements BedService {
     private SectorRepository sectorRepository;
 
     @Autowired
+    private DoctorRepository doctorRepository;
+
+    @Autowired
     private BedAssignmentHistoryRepository bedAssignmentHistoryRepository;
 
     @Override
-    public Bed assignPatientToBed(Long bedId, Long patientId) {
+    public Bed assignPatientToBed(Long bedId, Long patientId, Long doctorId) {
         Optional<Bed> bedOptional = bedRepository.findById(bedId);
         Optional<Patient> patientOptional = patientRepository.findById(patientId);
+        Optional<Doctor> doctorOptional = doctorRepository.findById(doctorId);
 
         if (!bedOptional.isPresent()) {
             throw new RuntimeException("Bed not found");
@@ -42,8 +43,13 @@ public class BedServiceImpl implements BedService {
             throw new RuntimeException("Patient not found");
         }
 
+        if (!doctorOptional.isPresent()) {
+            throw new RuntimeException("Doctor not found");
+        }
+
         Bed bed = bedOptional.get();
         Patient patient = patientOptional.get();
+        Doctor doctor = doctorOptional.get();
 
         if (bed.getCurrentPatient() != null) {
             throw new RuntimeException("Bed is not empty");
@@ -53,8 +59,8 @@ public class BedServiceImpl implements BedService {
             throw new RuntimeException("Patient is already assigned to another bed");
         }
 
-        // Assign the patient to the bed and update the state
         bed.setCurrentPatient(patient);
+        bed.setAssignedDoctor(doctor);
         patient.setBed(bed);
         bed.setStartDateTime(LocalDateTime.now());
         bed.setState(BedState.OCCUPIED);
@@ -62,12 +68,18 @@ public class BedServiceImpl implements BedService {
         BedAssignmentHistory history = new BedAssignmentHistory();
         history.setBed(bed);
         history.setPatient(patient);
+        history.setDoctorDetails(doctor.getNom()+" "+doctor.getPrenom()+"-"+doctor.getPhoneNumber()+"-"+doctor.getSpecialty()+"-"+doctor.getId());
         history.setStartDateTime(LocalDateTime.now());
         history.setStatus(PatientStatus.ASSIGNED);
         history.setBedAssignedId(bed.getId());
         bedAssignmentHistoryRepository.save(history);
 
         return bedRepository.save(bed);
+    }
+
+    @Override
+    public Bed assignPatientToBed(Long bedId, Long patientId) {
+        return null;
     }
 
     @Override

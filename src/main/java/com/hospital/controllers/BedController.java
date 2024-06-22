@@ -17,10 +17,10 @@ public class BedController {
     @Autowired
     private BedService bedService;
 
-    @PostMapping("/assign/bed/{bedId}/patient/{patientId}")
-    public ResponseEntity<?> assignPatientToBed(@PathVariable Long bedId, @PathVariable Long patientId) {
+    @PostMapping("/assign/bed/{bedId}/patient/{patientId}/doctor/{doctorId}")
+    public ResponseEntity<?> assignPatientToBed(@PathVariable Long bedId, @PathVariable Long patientId, @PathVariable Long doctorId) {
         try {
-            Bed bed = bedService.assignPatientToBed(bedId, patientId);
+            Bed bed = bedService.assignPatientToBed(bedId, patientId, doctorId);
             return ResponseEntity.ok(bed);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse("Exception : "+ e.getMessage()));

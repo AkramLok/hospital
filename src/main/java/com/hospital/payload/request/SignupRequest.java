@@ -18,6 +18,21 @@ public class SignupRequest {
   @Size(min = 6, max = 40)
   private String password;
 
+  @NotBlank
+  private String doctorNom;
+
+  @NotBlank
+  private String doctorPrenom;
+
+  @NotBlank
+  private String specialty;
+
+  @NotBlank
+  @Size(min = 10, max = 15)
+  private String phoneNumber;
+
+  // Getters and setters
+
   public String getUsername() {
     return username;
   }
@@ -40,5 +55,37 @@ public class SignupRequest {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public String getDoctorNom() {
+    return doctorNom;
+  }
+
+  public void setDoctorNom(String doctorNom) {
+    this.doctorNom = doctorNom;
+  }
+
+  public String getDoctorPrenom() {
+    return doctorPrenom;
+  }
+
+  public void setDoctorPrenom(String doctorPrenom) {
+    this.doctorPrenom = doctorPrenom;
+  }
+
+  public String getSpecialty() {
+    return specialty;
+  }
+
+  public void setSpecialty(String specialty) {
+    this.specialty = specialty;
+  }
+
+  public String getPhoneNumber() {
+    return phoneNumber;
+  }
+
+  public void setPhoneNumber(String phoneNumber) {
+    this.phoneNumber = phoneNumber;
   }
 }

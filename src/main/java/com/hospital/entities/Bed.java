@@ -29,6 +29,10 @@ public class Bed {
     @JsonManagedReference("bed-patient")
     private Patient currentPatient;
 
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor assignedDoctor;
+
     private LocalDateTime startDateTime;
 
     @Enumerated(EnumType.STRING)
