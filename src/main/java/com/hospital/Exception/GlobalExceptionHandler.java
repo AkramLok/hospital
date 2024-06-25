@@ -21,4 +21,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
                 .body(new MessageResponse("File size exceeds the maximum allowed limit!"));
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<?> handleRuntimeException(RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new MessageResponse("An error occurred: " + e.getMessage()));
+    }
 }
+

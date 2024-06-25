@@ -25,13 +25,26 @@ public class DoctorShiftServiceImpl implements DoctorShiftService {
     public DoctorShift createShift(DoctorShift shift) {
         return doctorShiftRepository.save(shift);
     }
+
+    @Override
+    public void deleteShifts(LocalDate startDate, LocalDate endDate) {
+        doctorShiftRepository.deleteByShiftDateBetween(startDate, endDate);
+    }
+
     @Override
     public void generateShifts(LocalDate startDate, LocalDate endDate) {
+        // Delete all existing shifts within the date range
+        doctorShiftRepository.deleteByShiftDateBetween(startDate, endDate);
+
+        // Retrieve all doctors from the repository
         List<Doctor> doctors = doctorRepository.findAll();
         int doctorCount = doctors.size();
+        if (doctorCount == 0) {
+            throw new RuntimeException("Aucun médecin disponible pour assigner des gardes.");
+        }
         int doctorIndex = 0;
 
-        // Iterate through the date range
+        // Loop through each date in the range and assign shifts
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
             // Check if a day shift exists for the current date
             DoctorShift existingDayShift = doctorShiftRepository.findByShiftDateAndShiftType(date, "jour");
@@ -59,6 +72,8 @@ public class DoctorShiftServiceImpl implements DoctorShiftService {
     }
 
 
+
+
     @Override
     public List<DoctorShift> getDoctorGuards(LocalDate startDate, LocalDate endDate, String shiftType) {
         if (shiftType != null && !shiftType.isEmpty()) {
@@ -71,7 +86,7 @@ public class DoctorShiftServiceImpl implements DoctorShiftService {
     @Override
     public DoctorShift addShift(LocalDate date, String shiftType, Long doctorId) {
         Doctor doctor = doctorRepository.findById(doctorId)
-                .orElseThrow(() -> new RuntimeException("Doctor not found"));
+                .orElseThrow(() -> new RuntimeException("Médecin non trouvé"));
 
         DoctorShift shift = new DoctorShift();
         shift.setShiftDate(date);
@@ -89,7 +104,7 @@ public class DoctorShiftServiceImpl implements DoctorShiftService {
             shift.setDoctor(doctorRepository.findById(doctorId).get());
             return doctorShiftRepository.save(shift);
         }
-        return null; // Or throw an exception
+        return null;
     }
 
     @Override

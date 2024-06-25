@@ -9,6 +9,8 @@ import java.util.List;
 public interface NurseShiftService {
     NurseShift createShift(NurseShift shift);
 
+    void deleteShifts(LocalDate startDate, LocalDate endDate);
+
     void generateShifts(LocalDate startDate, LocalDate endDate);
 
     List<NurseShift> getNurseShifts(LocalDate startDate, LocalDate endDate, String shiftType);

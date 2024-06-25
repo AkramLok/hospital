@@ -27,6 +27,15 @@ public class DoctorShiftController {
         doctorShiftService.generateShifts(startDate, endDate);
     }
 
+    @DeleteMapping("/delete")
+    public void deleteShifts(
+            @RequestParam LocalDate startDate,
+            @RequestParam LocalDate endDate
+    ) {
+        doctorShiftService.deleteShifts(startDate, endDate);
+    }
+
+
     @GetMapping("/guards")
     public List<DoctorShift> getDoctorGuards(
             @RequestParam LocalDate startDate,

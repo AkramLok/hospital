@@ -26,16 +26,28 @@ public class NurseShiftServiceImpl implements NurseShiftService {
     }
 
     @Override
+    public void deleteShifts(LocalDate startDate, LocalDate endDate) {
+        nurseShiftRepository.deleteByShiftDateBetween(startDate, endDate);
+    }
+
+    @Override
     public void generateShifts(LocalDate startDate, LocalDate endDate) {
+        // Delete all existing shifts within the date range
+        nurseShiftRepository.deleteByShiftDateBetween(startDate, endDate);
+
+        // Retrieve all nurses from the repository
         List<Nurse> nurses = nurseRepository.findAll();
         int nurseCount = nurses.size();
+        if (nurseCount == 0) {
+            throw new RuntimeException("Aucune infirmière disponible pour assigner des gardes.");
+        }
         int nurseIndex = 0;
 
+        // Loop through each date in the range and assign shifts
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
             // Assign nurses to day shift
             for (int i = 0; i < 2; i++) {
-                NurseShift existingDayShift = nurseShiftRepository.findByShiftDateAndShiftTypeAndNurse(date, "jour", nurses.get((nurseIndex + i) % nurseCount));
-                NurseShift dayShift = existingDayShift != null ? existingDayShift : new NurseShift();
+                NurseShift dayShift = new NurseShift();
                 dayShift.setShiftDate(date);
                 dayShift.setShiftType("jour");
                 dayShift.setNurse(nurses.get((nurseIndex + i) % nurseCount));
@@ -46,8 +58,7 @@ public class NurseShiftServiceImpl implements NurseShiftService {
 
             // Assign nurses to night shift
             for (int i = 0; i < 2; i++) {
-                NurseShift existingNightShift = nurseShiftRepository.findByShiftDateAndShiftTypeAndNurse(date, "nuit", nurses.get((nurseIndex + i) % nurseCount));
-                NurseShift nightShift = existingNightShift != null ? existingNightShift : new NurseShift();
+                NurseShift nightShift = new NurseShift();
                 nightShift.setShiftDate(date);
                 nightShift.setShiftType("nuit");
                 nightShift.setNurse(nurses.get((nurseIndex + i) % nurseCount));
@@ -71,7 +82,7 @@ public class NurseShiftServiceImpl implements NurseShiftService {
     @Override
     public NurseShift addShift(LocalDate date, String shiftType, Long nurseId) {
         Nurse nurse = nurseRepository.findById(nurseId)
-                .orElseThrow(() -> new RuntimeException("Nurse not found"));
+                .orElseThrow(() -> new RuntimeException("Infirmière non trouvée"));
 
         NurseShift shift = new NurseShift();
         shift.setShiftDate(date);

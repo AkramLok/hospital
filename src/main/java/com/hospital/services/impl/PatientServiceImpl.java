@@ -40,8 +40,7 @@ public class PatientServiceImpl implements PatientService {
         return patientRepository.save(patient);
     }
     private String generateReferenceID(Patient patient) {
-        // Example: Use initials of the patient name, current timestamp, and a random number
-        String initials = patient.getNom().substring(0, 1) + patient.getPrenom().substring(0, 1);
+        String initials =  patient.getPrenom().substring(0, 1)+patient.getNom().substring(0, 1);
         long timestamp = System.currentTimeMillis();
         int randomNum = (int) (Math.random() * 1000);
         return initials.toUpperCase() + "-" + timestamp + "-" + randomNum;

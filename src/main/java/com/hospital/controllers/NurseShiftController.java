@@ -30,6 +30,14 @@ public class NurseShiftController {
         nurseShiftService.generateShifts(startDate, endDate);
     }
 
+    @DeleteMapping("/delete")
+    public void deleteShifts(
+            @RequestParam LocalDate startDate,
+            @RequestParam LocalDate endDate
+    ) {
+        nurseShiftService.deleteShifts(startDate, endDate);
+    }
+
     @GetMapping("/guards")
     public List<NurseShift> getNurseShifts(
             @RequestParam LocalDate startDate,

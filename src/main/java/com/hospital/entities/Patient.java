@@ -39,7 +39,7 @@ public class Patient {
     @JsonManagedReference("medical-dossier-patient")
     private MedicalDossier medicalDossier;
 
-    @OneToMany(mappedBy = "patient")
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
     @JsonManagedReference("patient-roomAssignments")
     private List<RoomAssignment> roomAssignments;
 

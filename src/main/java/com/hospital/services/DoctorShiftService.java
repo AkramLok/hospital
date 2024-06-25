@@ -8,6 +8,8 @@ import java.util.List;
 public interface DoctorShiftService {
     DoctorShift createShift(DoctorShift shift);
 
+    void deleteShifts(LocalDate startDate, LocalDate endDate);
+
     void generateShifts(LocalDate startDate, LocalDate endDate);
 
     List<DoctorShift> getDoctorGuards(LocalDate startDate, LocalDate endDate, String shiftType);
