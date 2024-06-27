@@ -18,10 +18,10 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendPasswordResetEmail(String to, String token) {
-        String subject = "Password Reset Request";
+        String subject = "Demande de réinitialisation de mot de passe";
         String resetUrl = "http://localhost:3000/reset-password?token=" + token;
-        String message = "To reset your password, click the link below:\n" + resetUrl;
-        logger.info("Preparing to send email to " + to);
+        String message = "Pour réinitialiser votre mot de passe, cliquez sur le lien ci-dessous :\n" + resetUrl;
+        logger.info("Préparation de l'envoi de l'email à " + to);
         sendEmail(to, subject, message);
     }
 
@@ -32,11 +32,11 @@ public class EmailServiceImpl implements EmailService {
             email.setTo(to);
             email.setSubject(subject);
             email.setText(message);
-            logger.info("Sending email to " + to + " with subject " + subject);
+            logger.info("Envoi d'email à " + to + " avec le sujet " + subject);
             mailSender.send(email);
-            logger.info("Email sent successfully to " + to);
+            logger.info("Email envoyé avec succès à " + to);
         } catch (Exception e) {
-            logger.severe("Failed to send email to " + to + " with subject " + subject + ". Error: " + e.getMessage());
+            logger.severe("Échec de l'envoi d'email à " + to + " avec le sujet " + subject + ". Erreur : " + e.getMessage());
         }
     }
 }

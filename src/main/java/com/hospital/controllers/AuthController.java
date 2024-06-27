@@ -101,7 +101,6 @@ public class AuthController {
               .body(new MessageResponse("L'adresse e-mail est déjà utilisée !"));
     }
 
-    // Create new user's account
     User user = new User(signUpRequest.getUsername(),
             signUpRequest.getEmail(),
             encoder.encode(signUpRequest.getPassword()));
@@ -148,11 +147,14 @@ public class AuthController {
 
     if (userOptional.isPresent()) {
       User user = userOptional.get();
+      if (!encoder.matches(resetPasswordRequest.getOldPassword(), user.getPassword())) {
+        return ResponseEntity.badRequest().body(new MessageResponse("Ancien mot de passe incorrect.", false));
+      }
       user.setPassword(encoder.encode(resetPasswordRequest.getNewPassword()));
       userRepository.save(user);
-      return ResponseEntity.ok(new MessageResponse("Mot de passe mis à jour avec succès."));
+      return ResponseEntity.ok(new MessageResponse("Mot de passe mis à jour avec succès.", true));
     } else {
-      return ResponseEntity.badRequest().body(new MessageResponse("Utilisateur non trouvé."));
+      return ResponseEntity.badRequest().body(new MessageResponse("Utilisateur non trouvé.", false));
     }
   }
 
