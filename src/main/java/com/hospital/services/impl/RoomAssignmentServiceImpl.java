@@ -44,4 +44,9 @@ public class RoomAssignmentServiceImpl implements RoomAssignmentService {
     public List<RoomAssignment> getAssignmentsByDateRange(LocalDateTime startDate, LocalDateTime endDate) {
         return roomAssignmentRepository.findByAssignmentDateTimeBetween(startDate, endDate);
     }
+
+    @Override
+    public void deleteAssignment(Long id) {
+        roomAssignmentRepository.deleteById(id);
+    }
 }

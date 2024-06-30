@@ -10,4 +10,6 @@ public interface RoomAssignmentService {
     RoomAssignment createAssignment(Long doctorId, Long patientId, RoomAssignment assignment);
 
     List<RoomAssignment> getAssignmentsByDateRange(LocalDateTime startDate, LocalDateTime endDate);
+
+    void deleteAssignment(Long id);
 }

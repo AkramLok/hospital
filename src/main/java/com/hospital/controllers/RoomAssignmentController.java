@@ -26,4 +26,10 @@ public class RoomAssignmentController {
         LocalDateTime end = LocalDateTime.parse(endDate);
         return roomAssignmentService.getAssignmentsByDateRange(start, end);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteRoomAssignment(@PathVariable Long id) {
+        roomAssignmentService.deleteAssignment(id);
+    }
+
 }

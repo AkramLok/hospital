@@ -68,7 +68,7 @@ public class BedServiceImpl implements BedService {
         BedAssignmentHistory history = new BedAssignmentHistory();
         history.setBed(bed);
         history.setPatient(patient);
-        history.setDoctorDetails(doctor.getNom()+" "+doctor.getPrenom()+"-"+doctor.getPhoneNumber()+"-"+doctor.getSpecialty()+"-"+doctor.getId());
+        history.setDoctorDetails(doctor.getPrenom()+" "+doctor.getNom()+"-"+doctor.getPhoneNumber()+"-"+doctor.getSpecialty()+"-"+doctor.getId());
         history.setStartDateTime(LocalDateTime.now());
         history.setStatus(PatientStatus.ASSIGNED);
         history.setBedAssignedId(bed.getId());
