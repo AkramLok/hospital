@@ -25,6 +25,10 @@ public class Patient {
     private String ville;
     private String assurance;
     private String profession;
+    private String region;
+    private String familyPhone;
+    private String fullAddress;
+    private String maritalStatus;
 
     @Column(unique = true)
     private String referenceID;

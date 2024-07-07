@@ -19,15 +19,18 @@ public class Doctor {
     private String specialty;
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "assignedDoctor")
+    @Column(nullable = false)
+    private Boolean active = true;
+
+    @OneToMany(mappedBy = "assignedDoctor", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Bed> beds;
 
-    @OneToMany(mappedBy = "doctor")
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<RoomAssignment> roomAssignments;
 
-    @OneToMany(mappedBy = "doctor")
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<DoctorShift> doctorShifts;
 
@@ -77,6 +80,14 @@ public class Doctor {
 
     public void setBeds(List<Bed> beds) {
         this.beds = beds;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public List<DoctorShift> getDoctorShifts() {

@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DoctorService {
-    List<Doctor> getAllDoctors();
+
+    List<Doctor> getAllActiveDoctors();
+
+    List<Doctor> getAllNonActiveDoctors();
 
     Optional<Doctor> getDoctorById(Long id);
 
@@ -14,4 +17,7 @@ public interface DoctorService {
 
     void deleteDoctor(Long id);
 
+    void deactivateDoctor(Long id);
+
+    void activateDoctor(Long id);
 }

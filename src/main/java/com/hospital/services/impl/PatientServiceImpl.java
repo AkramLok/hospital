@@ -65,6 +65,18 @@ public class PatientServiceImpl implements PatientService {
             if (updatedPatient.getVille() != null && !updatedPatient.getVille().isEmpty()) {
                 patient.setVille(updatedPatient.getVille());
             }
+            if (updatedPatient.getRegion() != null && !updatedPatient.getRegion().isEmpty()) {
+                patient.setRegion(updatedPatient.getRegion());
+            }
+            if (updatedPatient.getFullAddress() != null && !updatedPatient.getFullAddress().isEmpty()) {
+                patient.setFullAddress(updatedPatient.getFullAddress());
+            }
+            if (updatedPatient.getFamilyPhone() != null && !updatedPatient.getFamilyPhone().isEmpty()) {
+                patient.setFamilyPhone(updatedPatient.getFamilyPhone());
+            }
+            if (updatedPatient.getMaritalStatus() != null && !updatedPatient.getMaritalStatus().isEmpty()) {
+                patient.setMaritalStatus(updatedPatient.getMaritalStatus());
+            }
             if (updatedPatient.getAssurance() != null && !updatedPatient.getAssurance().isEmpty()) {
                 patient.setAssurance(updatedPatient.getAssurance());
             }

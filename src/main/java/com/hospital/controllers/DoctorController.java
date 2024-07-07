@@ -18,9 +18,15 @@ public class DoctorController {
     @Autowired
     private DoctorService doctorService;
 
-    @GetMapping
-    public ResponseEntity<List<Doctor>> getAllDoctors() {
-        List<Doctor> doctors = doctorService.getAllDoctors();
+    @GetMapping("/activated")
+    public ResponseEntity<List<Doctor>> getAllActiveDoctors() {
+        List<Doctor> doctors = doctorService.getAllActiveDoctors();
+        return new ResponseEntity<>(doctors, HttpStatus.OK);
+    }
+
+    @GetMapping("/deactivated")
+    public ResponseEntity<List<Doctor>> getAllNonActiveDoctors() {
+        List<Doctor> doctors = doctorService.getAllNonActiveDoctors();
         return new ResponseEntity<>(doctors, HttpStatus.OK);
     }
 
@@ -61,5 +67,15 @@ public class DoctorController {
         } catch (Exception e) {
             return new ResponseEntity<>(new MessageResponse("Exception: " + e.getMessage()), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @DeleteMapping("/{id}/activate")
+    public void activateDoctor(@PathVariable Long id) {
+        doctorService.activateDoctor(id);
+    }
+
+    @DeleteMapping("/{id}/deactivate")
+    public void deactivateDoctor(@PathVariable Long id) {
+        doctorService.deactivateDoctor(id);
     }
 }

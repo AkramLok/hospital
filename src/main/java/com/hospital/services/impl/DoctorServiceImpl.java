@@ -1,7 +1,6 @@
 package com.hospital.services.impl;
 
 import com.hospital.entities.Doctor;
-import com.hospital.entities.User;
 import com.hospital.repositories.DoctorRepository;
 import com.hospital.repositories.UserRepository;
 import com.hospital.services.DoctorService;
@@ -21,8 +20,13 @@ public class DoctorServiceImpl implements DoctorService {
     private UserRepository userRepository;
 
     @Override
-    public List<Doctor> getAllDoctors() {
-        return doctorRepository.findAll();
+    public List<Doctor> getAllActiveDoctors() {
+        return doctorRepository.findByActive(true);
+    }
+
+    @Override
+    public List<Doctor> getAllNonActiveDoctors() {
+        return doctorRepository.findByActive(false);
     }
 
     @Override
@@ -36,6 +40,16 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public void deleteDoctor(Long id) {
         doctorRepository.deleteById(id);
+    }
+
+    @Override
+    public void deactivateDoctor(Long id) {
+        doctorRepository.deactivateDoctor(id);
+    }
+
+    @Override
+    public void activateDoctor(Long id) {
+        doctorRepository.activateDoctor(id);
     }
 
 }

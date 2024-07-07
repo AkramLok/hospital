@@ -24,7 +24,7 @@ public class Nurse {
     private String specialty;
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "nurse")
+    @OneToMany(mappedBy = "nurse", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<NurseShift> nurseShifts;
 }
