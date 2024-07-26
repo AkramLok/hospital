@@ -1,5 +1,7 @@
 # Medical Cabinet Backend Application
 
+For Frontend Code (React): https://github.com/AkramLok/hospital-frontend-react
+
 ## Overview
 The Medical Cabinet Application is designed to streamline the management of patient information, bed assignments, doctor and nurse shifts, and pharmacy inventory within a hospital setting. Built using Java Spring Boot, this application ensures a robust, scalable, and secure system accessible exclusively to hospital doctors.
 
