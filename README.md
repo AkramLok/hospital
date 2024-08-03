@@ -3,7 +3,7 @@
 For Frontend Code (React): https://github.com/AkramLok/hospital-frontend-react
 
 ## Overview
-The Medical Cabinet Application is designed to streamline the management of patient information, bed assignments, doctor and nurse shifts, and pharmacy inventory within a hospital setting. Built using Java Spring Boot, this application ensures a robust, scalable, and secure system accessible exclusively to hospital doctors.
+The Medical Cabinet Application is designed to streamline the management of patient information, bed assignments, doctor and nurse shifts, and pharmacy inventory within a hospital setting. Built using Java Spring Boot, this application ensures a robust, scalable, and secure system accessible exclusively to hospital doctors. The Code is in French, it can be updated later to English!
 
 ## Features
 
@@ -17,8 +17,8 @@ The Medical Cabinet Application is designed to streamline the management of pati
 
 3. **Doctor and Patient Assignment**
    - Manage assignments within two specific blocs:
-     - Bloc de Rythomologie
-     - Salle Catherterisme
+     - Rhythmology Block
+     - Catheterization Room
 
 4. **Shift Scheduling**
    - Plan and manage shifts for doctors and nurses.
