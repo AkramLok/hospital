@@ -49,17 +49,24 @@ The Medical Cabinet Application is designed to streamline the management of pati
 - **Tools**
   - Maven
   - Lombok
+  - Postman
 
 ## Installation
 
+### Run WAMP or XAMPP application
+Configure mysql port to 3306 and keep it running.
+
 ### Configure the Database
 Update the `application.properties` or `application.yml` file with your database configuration.
+No need to create the database in PhpMyAdmin interface (using WAMP or XAMPP, in MySql CL (using MySql Command Line Client) or MySql Workbench, it will be created automatically.
 
 #### `application.properties`
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/medical_cabinet
-spring.datasource.username=root
-spring.datasource.password=yourpassword
+spring.datasource.url=jdbc:mysql://localhost:3306/medical_cabinet #medical_cabinet is the name of database
+spring.datasource.username=yourusername #username we put in PhpMyAdmin (Default Usernamee: 'root')
+spring.datasource.password=yourpassword #password we put in PhpMyAdmin (Default Password: '')
+spring.jpa.hibernate.ddl-auto=create
+spring.jpa.defer-datasource-initialization=true
 ```
 
 ### Build and run the backend application
