@@ -39,7 +39,7 @@ The Medical Cabinet Application is designed to streamline the management of pati
   - RESTful APIs
 
 - **Database**
-  - MySQL
+  - MySQL (using WAMP or XAMPP)
 
 - **Frontend**
   - HTML, CSS, JavaScript
