@@ -58,7 +58,7 @@ Configure mysql port to 3306 and keep it running.
 
 ### Configure the Database
 Update the `application.properties` or `application.yml` file with your database configuration.
-No need to create the database in PhpMyAdmin interface (using WAMP or XAMPP, in MySql CL (using MySql Command Line Client) or MySql Workbench, it will be created automatically.
+No need to create the database in PhpMyAdmin interface (using WAMP or XAMPP), in MySql CLI (using MySql Command Line Client) or MySql Workbench, it will be created automatically.
 
 #### `application.properties`
 ```properties
